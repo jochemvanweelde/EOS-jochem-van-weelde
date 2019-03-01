@@ -1,0 +1,9 @@
+Kies 1 van de volgende opties: 
+new_file 
+ls
+src
+find
+python
+exit
+quit
+error
