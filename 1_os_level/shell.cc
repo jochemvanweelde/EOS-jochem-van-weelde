@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <cstring>
 using namespace std;
 
 int main()
@@ -76,9 +77,9 @@ if (c_pid == 0){ //Dit is de child
 
 void find() // ToDo: Implementeer volgens specificatie.
 { 
-char* zoekwoord;
+string zoekwoord;
 cout << "Je kan nu gaan zoeken naar een woord(en) in bepaalde files in directory ~/Downloads/V1EOS-practica-master/1_os_level \nNaar welke naam wil je zoeken:  ";
-cin >> zoekwoord;
+getline(cin,zoekwoord);
 pid_t pid;
 int status, fd[2], ret;
 
@@ -90,20 +91,21 @@ if(ret == -1){
 
 pid = fork();
 if (pid == 0){ //Dit is de child1
-	char * find_args[] = { "/usr/bin/find", "." , NULL };
+	char * find_args[] = { "/usr/bin/find", "./" , NULL };
 	close(fd[0]);
+	cout << " Test" << endl << endl;
 	dup2(fd[1], STDOUT_FILENO);
 	execv(find_args[0], find_args);
 }
 pid = fork();
 if(pid == 0){
-	char * grep_args[] = {"/bin/grep", zoekwoord, NULL};
+	char * grep_args[] = {"/bin/grep", (char*)zoekwoord.c_str(), NULL};
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	execv(grep_args[0],grep_args);
 }
-close(fd[0]);
 close(fd[1]);
+close(fd[0]);
 waitpid(-1, &status, 0);
 waitpid(-1, &status, 0);
 }
