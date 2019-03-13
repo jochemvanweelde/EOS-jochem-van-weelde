@@ -1,0 +1,13 @@
+#!/bin/bash
+afbeeldingmap=$1
+diraanwezig=$(pwd)
+if [ ! -d "Afbeeldingen" ]; then
+	echo "Er is nog geen map Afbeeldingen met afbeeldingen erin. Alle foto's worden nu in de Map Afbeeldingen gelaatst, en de vakantie foto's in de map Vakantie" 
+	sorteerAfbeeldingen $1
+fi
+cd Afbeeldingen
+mkdir Vakantie
+for f in $(find . | grep vakantie); do
+	cp $f $(pwd)/Vakantie
+done
+echo "Gelukt! Alle vakantiefoto's zitten nu in map Afbeeldingen/Vakantie!"

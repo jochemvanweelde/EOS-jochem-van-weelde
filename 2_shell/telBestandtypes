@@ -1,0 +1,11 @@
+#!/bin/bash
+mapje=$1
+cd
+cd $1
+for type in "${@:2}"; do
+	count=0
+	for file in $(find . | grep $type); do
+		((count++))
+	done
+	echo Voor type $type zijn $count gevonden.
+done

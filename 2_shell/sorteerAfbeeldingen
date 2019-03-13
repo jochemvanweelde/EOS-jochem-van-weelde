@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+Mapje=$1
+Diraanwezig=$(pwd)
+if [ ! -d "Afbeeldingen" ]; then
+	mkdir Afbeeldingen
+fi
+cd
+cd $1
+for pic in $(find *.jpg *.png);do
+	cp $pic $Diraanwezig/Afbeeldingen
+done
+echo "Gelukt! Alle afbeeldingen (jpg en png) zitten nu in de map Afbeeldingen"

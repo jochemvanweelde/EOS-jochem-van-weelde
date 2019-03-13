@@ -1,0 +1,23 @@
+#!/bin/bash
+file=$1
+echo "We gaan inloggen, je hebt een file meegegeven waar gebruikers zijn geregistreerd."
+read -p 'Gebruikersnaam: ' gebruikersnaam
+if grep -Fxq "Gebruikersnaam: $gebruikersnaam" $1
+then
+	echo Okay, nu het wachtwoord.
+else
+	echo Gebruiker niet gevonden.
+	exit
+fi
+read -sp 'Wachtwoord: ' wachtwoord
+echo
+MD5=$(echo -n $wachtwoord | md5sum)
+wwregel=$(echo Wachtwoord: $MD5)
+if grep -Fxq "$wwregel" $1
+then
+	echo "Gelukt! Je bent nu ingelogd!"
+else
+	echo Nee dat is fout
+	exit
+fi
+

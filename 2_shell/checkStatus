@@ -1,0 +1,21 @@
+#!/bin/bash
+
+map=$1
+commando=$2
+mapBegin=$(pwd)
+cd
+cd $map
+if [ -f logCheckStatus.txt ]; then
+	rm logCheckStatus.txt
+fi
+touch logCheckStatus.txt
+for file in $(find *); do
+	if $commando $file
+	then
+		echo $file kan met commando $commando uitgevoerd worden en is geslaagd. >> logCheckStatus.txt
+	else
+		echo $file kan NIET met commando $commando uitgevoerd worden en is gefaald. >> logCheckStatus.txt
+	fi
+done
+mv logCheckStatus.txt $mapBegin
+echo Klaar het bestand is aangemaakt met de naam logCheckStatus.txt

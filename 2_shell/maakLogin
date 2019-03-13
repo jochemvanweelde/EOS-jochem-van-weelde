@@ -1,0 +1,30 @@
+#!/bin/bash
+filenaam=$1
+echo "Hallo daar! Wat is jouw naam?"
+read -p 'naam: ' naam
+if [[ -z "$naam" ]]; then
+	naam=$(whoami)
+fi
+echo Hallo $naam, we gaan een account aanmaken. Je gebruikersnaam is nu $naam.
+echo "Je moet een wachtwoord gaan maken, deze wordt veilig opgeslagen (versleuteld)"
+while true; do
+	read -sp "Wachtwoord: " wachtwoord1
+	echo
+	echo "Top, om te bevestigen dat je geen tikfout hebt gemaakt mag je het nog een keer intoetsen"
+	read -sp "Wachtwoord (bevestiging): " wachtwoord2
+	echo
+	if [ $wachtwoord1 = $wachtwoord2 ]; then
+		if [[ $wachtwoord1 =~ [A-Z] && $wachtwoord1 =~ [a-z] && ${#wachtwoord1} -ge 8 && $wachtwoord1 =~ [0-9] ]]; then
+			echo "Gelukt, de file is gemaakt!"
+			break;
+		fi
+	fi
+	echo "Je hebt een tikfout gemaakt, we gaan het helemaal opnieuw proberen. Het wachtwoord moet wel bestaan uit 1 kleine letter, 1 hoofdletter, 1 cijfer en 8 karakters of langer zijn."
+done
+MD5=$(echo -n $wachtwoord2 | md5sum)
+if [ -f  $1 ]; then
+	rm $1
+fi
+touch $1
+echo Gebruikersnaam: $naam >> $1
+echo Wachtwoord: $MD5 >> $1
